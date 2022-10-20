@@ -31,12 +31,28 @@ private:
         dp[t] = ans;
         return dp[t];
     }
+    
+    int solveTab(vector<int>& nums, int t){
+        vector<int> dp(t+1,0);
+        
+        dp[0] = 1;
+        
+        for(int i=1; i<=t; i++){
+            for(int j=0; j<nums.size(); j++){
+                if(i-nums[j]>=0)
+                dp[i] += dp[i-nums[j]];
+            }
+        }
+        return dp[t];
+        
+    }
 public:
     int combinationSum4(vector<int>& nums, int target) {
         //return solveRec(nums,target);
         
-        int n = nums.size();
         vector<int>dp(target+1, -1);
         return solveMem(nums,target,dp);
+        
+        //return solveTab(nums,target); error
     }
 };
