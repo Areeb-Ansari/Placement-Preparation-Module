@@ -81,7 +81,28 @@ private:
         return dp[0];
     }
     
-    
+    int space(vector<int>& days, vector<int>& cost){
+        int ans = 0;
+        
+        queue<pair<int,int>> month; // <days,cost till day>
+        queue<pair<int,int>> week;
+        
+        for(int day : days){
+            //step 1 - remove expire days
+            while(!month.empty() && month.front().first+30 <= day)
+                month.pop();
+            while(!week.empty() && week.front().first+7 <= day)
+                week.pop();
+            
+            //step 2- push current days cost
+            month.push(make_pair(day,ans+cost[2]));
+            week.push(make_pair(day,ans+cost[1]));
+            
+            // step 3 - update ans
+            ans = min(ans+cost[0], min(week.front().second,month.front().second));
+        }
+        return ans;
+    }
 public:
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         int n = days.size();
@@ -90,6 +111,8 @@ public:
         // vector<int> dp(n+1,-1);
         // return solveMem(n,days,costs,0,dp);
         
-        return solveTab(n,days,costs);
+        //return solveTab(n,days,costs);
+        
+        return space(days,costs);
     }
 };
