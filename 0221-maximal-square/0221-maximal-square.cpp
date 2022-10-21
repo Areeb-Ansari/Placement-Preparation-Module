@@ -39,17 +39,44 @@ private:
             return dp[i][j] = 0;
     }
     
+    void solveTab(vector<vector<char>>& mat, int& maxi){
+        int row = mat.size();
+        int col = mat[0].size();
+        
+        vector<vector<int>> dp(row+1, vector<int>(col+1, 0));
+        
+        for(int i = row-1; i>=0; i--){
+            for(int j=col-1; j>=0; j--){
+                
+                int right = dp[i][j+1];
+                int diag = dp[i+1][j+1];
+                int down = dp[i+1][j];
+
+                if(mat[i][j] == '1'){
+                    dp[i][j] = 1 + min(right,min(diag,down));
+                    maxi = max(maxi,dp[i][j]);
+                }
+                else
+                    dp[i][j] = 0;      
+            }
+        }
+    }
+    
 public:
     int maximalSquare(vector<vector<char>>& matrix) {
         // int maxi = 0;
         // solveRec(matrix, 0, 0, maxi); //i,j
         // return maxi*maxi;
         
-        int n = matrix.size();
-        int m = matrix[0].size();
-        vector<vector<int>>dp(n,vector<int>(m,-1));
+        // int n = matrix.size();
+        // int m = matrix[0].size();
+        // vector<vector<int>>dp(n,vector<int>(m,-1));
+        // int maxi = 0;
+        // solveMem(matrix, 0, 0, maxi, dp);
+        // return maxi*maxi;
+        
         int maxi = 0;
-        solveMem(matrix, 0, 0, maxi, dp);
+        solveTab(matrix,maxi);
         return maxi*maxi;
         
     }
