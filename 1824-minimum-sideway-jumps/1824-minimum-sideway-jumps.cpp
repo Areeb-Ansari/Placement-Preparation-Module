@@ -41,7 +41,7 @@ private:
                     int jump = INT_MAX;
                     for(int i=1; i<=3; i++){
                         if(obs[pos] != i && lane != i)
-                            jump = min(jump,1+dp[i][pos+1]);
+                            jump = min(jump,1+dp[i][pos+1]);//refer notes for pos+1
                     }
                     dp[lane][pos] = jump;
                 }
@@ -50,6 +50,38 @@ private:
         }
         return min(dp[1][0]+1, min(dp[2][0], dp[3][0]+1));
     }
+    
+    int solveSpace(vector<int>& obs){
+        int n = obs.size()-1;
+        vector<int> curr(4,INT_MAX);
+        vector<int> next(4,INT_MAX);
+        
+        next[0] = 0;
+        next[1] = 0;
+        next[2] = 0;
+        next[3] = 0;
+        
+        for(int pos = n-1; pos>=0; pos--){
+            for(int lane=1; lane<=3; lane++){
+
+                if(obs[pos+1] != lane){
+                    curr[lane] =  next[lane];
+                }
+                else{
+                    int jump = INT_MAX;
+                    for(int i=1; i<=3; i++){
+                        if(obs[pos] != i && lane != i)
+                            jump = min(jump,1+next[i]);//refer notes for pos+1
+                    }
+                    curr[lane] = jump;
+                }
+                
+            }
+            next = curr;
+        }
+        return min(next[1]+1, min(next[2], next[3]+1));
+    }
+    
 public:
     int minSideJumps(vector<int>& obstacles) {
         //return solveRec(obstacles, 2, 0);
@@ -58,6 +90,8 @@ public:
         // vector<vector<int>> dp(4,vector<int>(s,-1));
         // return solveMem(obstacles, 2, 0, dp);
         
-        return solveTab(obstacles);
+        //return solveTab(obstacles);
+        
+        return solveSpace(obstacles);
     }
 };
