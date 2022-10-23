@@ -1,0 +1,32 @@
+class Solution {
+private:
+    int solveMem(vector<int>& obs, int currlane, int pos, vector<vector<int>>& dp){
+        //base case
+        int n = obs.size()-1;
+        if(n == pos)
+            return 0;
+        
+        if(dp[currlane][pos] != -1)
+            return dp[currlane][pos];
+        
+        if(obs[pos+1] != currlane){
+            return solveMem(obs, currlane, pos+1, dp);
+        }
+        else{
+            int jump = INT_MAX;
+            for(int i=1; i<=3; i++){
+                if(obs[pos] != i && currlane != i)
+                    jump = min(jump,1+solveMem(obs,i,pos, dp));
+            }
+            return dp[currlane][pos] = jump;
+        }
+    }
+public:
+    int minSideJumps(vector<int>& obstacles) {
+        //return solveRec(obstacles, 2, 0);
+        
+        int s = obstacles.size();
+        vector<vector<int>> dp(4,vector<int>(s,-1));
+        return solveMem(obstacles, 2, 0, dp);
+    }
+};
