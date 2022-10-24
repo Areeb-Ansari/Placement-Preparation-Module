@@ -27,13 +27,36 @@ private:
         return dp[index][time] =  max(incl, excl);
     }
     
+    int solveTab(vector<int>& sat){
+        int n = sat.size();
+        vector<vector<int>> dp(n+1, vector<int>(n+1,0));
+        
+        //for base case analysis when index = n mark it as 0
+        //which has already been done while intialization of dp array
+        //since last index = n
+        //so loop back from index = n-1
+        
+        for(int index=n-1; index>=0; index--){
+            for(int time=index; time>=0; time--){
+                
+                int incl = sat[index]*(time+1) + dp[index+1][time+1];
+                int excl = 0 + dp[index+1][time];
+
+                dp[index][time] =  max(incl, excl);
+            }
+        }
+        return dp[0][0];
+    }
+    
 public:
     int maxSatisfaction(vector<int>& satisfaction) {
         sort(satisfaction.begin(), satisfaction.end());
         // return solveRec(satisfaction, 0, 0);
         
         int n = satisfaction.size();
-        vector<vector<int>> dp(n+1, vector<int>(n+1,-1));
-        return solveMem(satisfaction, 0, 0, dp);
+        // vector<vector<int>> dp(n+1, vector<int>(n+1,-1));
+        // return solveMem(satisfaction, 0, 0, dp);
+        
+        return solveTab(satisfaction);
     }
 };
