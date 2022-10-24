@@ -48,6 +48,24 @@ private:
         return dp[0][0];
     }
     
+    int solveSpace(vector<int>& sat){
+        int n = sat.size();
+        vector<int>curr(n+1,0);
+        vector<int>next(n+1,0);
+        
+        for(int index=n-1; index>=0; index--){
+            for(int time=index; time>=0; time--){
+                
+                int incl = sat[index]*(time+1) + next[time+1];
+                int excl = 0 + next[time];
+
+                curr[time] =  max(incl, excl);
+            }
+            next = curr;
+        }
+        return curr[0];
+    }
+    
 public:
     int maxSatisfaction(vector<int>& satisfaction) {
         sort(satisfaction.begin(), satisfaction.end());
@@ -57,6 +75,8 @@ public:
         // vector<vector<int>> dp(n+1, vector<int>(n+1,-1));
         // return solveMem(satisfaction, 0, 0, dp);
         
-        return solveTab(satisfaction);
+        //return solveTab(satisfaction);
+        
+        return solveSpace(satisfaction);
     }
 };
