@@ -110,9 +110,9 @@ public:
         // int case2 = solveMem(slices, 1, k/3, k-1, dp2);
         // return max(case1, case2);
         
-        // return solveTab(slices);
+         return solveTab(slices);
         
-        return solveSpace(slices);
+        //return solveSpace(slices);
         
         
     }
