@@ -52,6 +52,29 @@ private:
         return dp[dice][target];
     }
     
+    int solveSpace(int dice, int face, int target){
+        vector<int>prev(target+1, 0);
+        vector<int>curr(target+1, 0);
+        
+        //by base case analysis of top down
+        prev[0] = 1;
+        
+        for(int d=1; d<=dice; d++){
+            for(int t=1; t<=target; t++){
+                
+                int ans = 0;
+                for(int i=1; i<=face; i++){
+                    if(t-i>=0)
+                    ans = (ans%MOD + (prev[t-i])%MOD)%MOD;
+                }
+                curr[t] = ans;
+                
+            }
+            prev = curr;
+        }
+        return curr[target];
+    }
+    
 public:
     int numRollsToTarget(int n, int k, int target) {
         //return solveRec(n, k, target);
@@ -59,6 +82,8 @@ public:
         // vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
         // return solveMem(n, k, target, dp);
         
-        return solveTab(n, k, target);
+        //return solveTab(n, k, target);
+        
+        return solveSpace(n, k, target);
     }
 };
