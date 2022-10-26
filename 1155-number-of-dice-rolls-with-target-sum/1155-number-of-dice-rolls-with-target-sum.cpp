@@ -31,11 +31,34 @@ private:
         return dp[dice][target] = ans;
     }
     
+    int solveTab(int dice, int face, int target){
+        vector<vector<int>>dp(dice+1, vector<int>(target+1, 0));
+        
+        //by base case analysis of top down
+        dp[0][0] = 1;
+        
+        for(int d=1; d<=dice; d++){
+            for(int t=1; t<=target; t++){
+                
+                int ans = 0;
+                for(int i=1; i<=face; i++){
+                    if(t-i>=0)
+                    ans = (ans%MOD + (dp[d-1][t-i])%MOD)%MOD;
+                }
+                dp[d][t] = ans;
+                
+            }
+        }
+        return dp[dice][target];
+    }
+    
 public:
     int numRollsToTarget(int n, int k, int target) {
         //return solveRec(n, k, target);
         
-        vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
-        return solveMem(n, k, target, dp);
+        // vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
+        // return solveMem(n, k, target, dp);
+        
+        return solveTab(n, k, target);
     }
 };
