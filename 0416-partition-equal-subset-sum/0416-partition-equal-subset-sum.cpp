@@ -56,6 +56,31 @@ private:
         return dp[0][target];
     }
     
+    bool solveSpace(int n, vector<int>nums, int target){
+        vector<int>curr(target+1, 0);
+        vector<int>next(target+1, 0);
+        
+        //analysis of base case
+        for(int i=0; i<=n; i++){
+            next[0] = 1;
+        }
+        
+        for(int index=n-1; index>=0; index--){
+            for(int tar=0; tar<=target; tar++){
+                
+                bool incl = 0;
+                if(tar-nums[index]>=0)
+                incl = next[tar-nums[index]]; // startinf from n-1 so make dp array of n+1size
+                bool excl = next[tar]; // to avoid invalid index 
+
+                curr[tar] = incl or excl;
+                
+            }
+            next = curr;
+        }
+        return curr[target];
+    }
+    
 public:
     bool canPartition(vector<int>& nums) {
         int n = nums.size();
@@ -73,6 +98,9 @@ public:
         // vector<vector<int>> dp(n, vector<int>(target+1, -1));
         // return solveMem(0, n, nums, target, dp);
         
-        return solveTab(n, nums, target);
+        //return solveTab(n, nums, target);
+        
+        return solveSpace(n, nums, target);
+        
     }
 };
