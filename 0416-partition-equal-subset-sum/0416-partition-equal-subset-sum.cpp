@@ -61,9 +61,9 @@ private:
         vector<int>next(target+1, 0);
         
         //analysis of base case
-        for(int i=0; i<=n; i++){
+        
             next[0] = 1;
-        }
+        
         
         for(int index=n-1; index>=0; index--){
             for(int tar=0; tar<=target; tar++){
