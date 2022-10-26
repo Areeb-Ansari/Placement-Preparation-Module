@@ -33,6 +33,29 @@ private:
         return dp[index][target] = incl or excl;
     }
     
+    bool solveTab(int n, vector<int>nums, int target){
+        vector<vector<int>> dp(n+1, vector<int>(target+1, 0));
+        
+        //analysis of base case
+        for(int i=0; i<=n; i++){
+            dp[i][0] = 1;
+        }
+        
+        for(int index=n-1; index>=0; index--){
+            for(int tar=0; tar<=target; tar++){
+                
+                bool incl = 0;
+                if(tar-nums[index]>=0)
+                incl = dp[index+1][tar-nums[index]]; // startinf from n-1 so make dp array of n+1size
+                bool excl = dp[index+1][tar]; // to avoid invalid index 
+
+                dp[index][tar] = incl or excl;
+                
+            }
+        }
+        return dp[0][target];
+    }
+    
 public:
     bool canPartition(vector<int>& nums) {
         int n = nums.size();
@@ -47,7 +70,9 @@ public:
         
         //return solveRec(0, n, nums, target);
         
-        vector<vector<int>> dp(n, vector<int>(target+1, -1));
-        return solveMem(0, n, nums, target, dp);
+        // vector<vector<int>> dp(n, vector<int>(target+1, -1));
+        // return solveMem(0, n, nums, target, dp);
+        
+        return solveTab(n, nums, target);
     }
 };
